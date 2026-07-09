@@ -94,8 +94,8 @@
 
     <div class="modal-overlay active" id="loginModal">
         <div class="modal-box">
-            <h2 style="color:#ea580c; margin-top:0;">🌍 World Wonders Explorer</h2>
-            <p style="font-size:14px; color:#6b7280;">กรอกข้อมูลผู้เรียนเพื่อเริ่มต้นกิจกรรม</p>
+            <h2 style="color:#ea580c; margin-top:0;">🌍 World Wonders</h2>
+            <p style="font-size:14px; color:#6b7280;">กรอกข้อมูลผู้เรียนเพื่อเริ่มต้น</p>
             <input type="text" id="m_name" placeholder="ชื่อ-นามสกุล">
             <input type="text" id="m_room" placeholder="ชั้น/ห้อง (เช่น 1/1)">
             <input type="text" id="m_id" placeholder="รหัสนักเรียน 5 หลัก" maxlength="5" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
@@ -110,7 +110,7 @@
         <div class="content-area">
             
             <div class="screen active" id="menuScreen">
-                <h3 style="color:#ea580c; margin: 5px 0;">🎯 เลือกชุดบทเรียนเพื่อสำรวจ</h3>
+                <h3 style="color:#ea580c; margin: 5px 0;">🎯 เลือกบทเรียน</h3>
                 <div class="menu-grid">
                     <button class="menu-btn" onclick="showScreen('tajScreen')">
                         <i class="fa-solidxl fa-gopuram"><span style="font-size:30px;">🕌</span></i>
@@ -122,7 +122,7 @@
                     <button class="menu-btn" onclick="showScreen('wallScreen')">
                         <i class="fa-solidxl fa-archway"><span style="font-size:30px;">🏮</span></i>
                         <div class="menu-btn-text">
-                            <h4>Part 2: Great Wall of China</h4>
+                            <h4>Part 2: Great Wall</h4>
                             <span id="statusWall">สถานะ: ⏳ ยังไม่ได้ทำ (3 ข้อ)</span>
                         </div>
                     </button>
@@ -133,11 +133,16 @@
             </div>
 
             <div class="screen" id="tajScreen">
-                <button class="btn-action" style="background:#6b7280; box-shadow:0 4px 0 #4b5563;" onclick="showScreen('menuScreen')"><i class="fa-solid fa-arrow-left"></i> กลับหน้าหลัก</button>
+                <button class="btn-action" style="background:#6b7280; box-shadow:0 4px 0 #4b5563; padding: 5px 15px; font-size:13px;" onclick="showScreen('menuScreen')"><i class="fa-solid fa-arrow-left"></i> กลับหน้าหลัก</button>
                 <h3 style="color:#ea580c; margin:10px 0;">🕌 Part 1: Taj Mahal, India</h3>
-                <button class="btn-action" style="background:#f59e0b; box-shadow:0 4px 0 #b45309;" onclick="openReadingPopup('taj')">📖 กดดูรูปภาพและฟังบรรยาย</button>
                 
-                <div id="tajForm" style="margin-top:10px;">
+                <audio id="audioTaj" controls style="width:100%; margin-bottom:10px; border-radius:50px;">
+                    <source src="audio1.mp3" type="audio/mpeg">
+                </audio>
+
+                <button class="btn-action" style="background:#f59e0b; box-shadow:0 4px 0 #b45309; width:100%; margin-bottom:15px;" onclick="openReadingPopup('taj')">📖 เปิดดูบทอ่าน (Transcript)</button>
+                
+                <div id="tajForm">
                     <div class="exercise-item"><label class="exercise-label">1. The Taj Mahal is in...</label><select id="taj1" onchange="saveProgress()"><option value="">-- เลือกคำตอบ --</option><option value="Agra, India">Agra, India</option><option value="Bangkok, Thailand">Bangkok, Thailand</option></select></div>
                     <div class="exercise-item"><label class="exercise-label">2. It is made of white marble and...</label><select id="taj2" onchange="saveProgress()"><option value="">-- เลือกคำตอบ --</option><option value="precious stones">precious stones</option><option value="old bricks">old bricks</option></select></div>
                     <div class="exercise-item"><label class="exercise-label">3. There are __ rooms inside.</label><select id="taj3" onchange="saveProgress()"><option value="">-- เลือกคำตอบ --</option><option value="8">8</option><option value="16">16</option></select></div>
@@ -147,11 +152,16 @@
             </div>
 
             <div class="screen" id="wallScreen">
-                <button class="btn-action" style="background:#6b7280; box-shadow:0 4px 0 #4b5563;" onclick="showScreen('menuScreen')"><i class="fa-solid fa-arrow-left"></i> กลับหน้าหลัก</button>
+                <button class="btn-action" style="background:#6b7280; box-shadow:0 4px 0 #4b5563; padding: 5px 15px; font-size:13px;" onclick="showScreen('menuScreen')"><i class="fa-solid fa-arrow-left"></i> กลับหน้าหลัก</button>
                 <h3 style="color:#ea580c; margin:10px 0;">🏮 Part 2: Great Wall of China</h3>
-                <button class="btn-action" style="background:#f59e0b; box-shadow:0 4px 0 #b45309;" onclick="openReadingPopup('wall')">📖 กดดูรูปภาพและฟังบรรยาย</button>
                 
-                <div id="wallForm" style="margin-top:10px;">
+                <audio id="audioWall" controls style="width:100%; margin-bottom:10px; border-radius:50px;">
+                    <source src="audio2.mp3" type="audio/mpeg">
+                </audio>
+
+                <button class="btn-action" style="background:#f59e0b; box-shadow:0 4px 0 #b45309; width:100%; margin-bottom:15px;" onclick="openReadingPopup('wall')">📖 เปิดดูบทอ่าน (Transcript)</button>
+                
+                <div id="wallForm">
                     <div class="exercise-item"><label class="exercise-label">1. Which continent is it in?</label><select id="wall1" onchange="saveProgress()"><option value="">-- เลือกคำตอบ --</option><option value="Asia">Asia</option><option value="Europe">Europe</option></select></div>
                     <div class="exercise-item"><label class="exercise-label">2. What is it made of?</label><select id="wall2" onchange="saveProgress()"><option value="">-- เลือกคำตอบ --</option><option value="Only stones">Only stones</option><option value="Earth, stones, bricks and wood">Earth, stones, bricks and wood</option></select></div>
                     <div class="exercise-item"><label class="exercise-label">3. What does it look like?</label><select id="wall3" onchange="saveProgress()"><option value="">-- เลือกคำตอบ --</option><option value="Short wall">Short wall</option><option value="Over 5000 km long with watch towers">Over 5000 km long with watch towers</option></select></div>
@@ -165,9 +175,8 @@
         <div class="reading-box">
             <div class="close-btn" onclick="closeReadingPopup()"><i class="fa-solid fa-xmark"></i></div>
             <img src="" id="popupImage" class="popup-img" alt="Wonder Image">
-            <h3 id="readTitle" style="color:#ea580c; margin:5px 0;">Reading Panel</h3>
-            <audio id="audioPlayer" controls style="width:100%; margin-bottom:10px;"></audio>
-            <div id="readText" style="font-size:13px; line-height:1.5; color:#374151; text-align:left; max-height:140px; overflow-y:auto; background:#f8fafc; padding:10px; border-radius:10px;"></div>
+            <h3 id="readTitle" style="color:#ea580c; margin:5px 0;">Transcript</h3>
+            <div id="readText" style="font-size:13px; line-height:1.5; color:#374151; text-align:left; max-height:180px; overflow-y:auto; background:#f8fafc; padding:10px; border-radius:10px;"></div>
         </div>
     </div>
 
@@ -183,7 +192,6 @@
 <script>
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxd_UGE1ZY_1dcB3B7l0Vy8azxhuuFoc_kftJ7QZ1Nc4XIaXGKF9RPs8WxhZ0K5VyVN/exec';
     let student = { name: "", room: "", id: "" };
-    let audio = document.getElementById('audioPlayer');
 
     window.onload = () => {
         document.getElementById('m_room').addEventListener('blur', function() { this.value = formatRoomInput(this.value); });
@@ -209,27 +217,28 @@
     }
 
     function showScreen(screenId) {
+        // หยุดเสียงทั้งหมดเมื่อกดสลับหน้า
+        document.getElementById('audioTaj').pause();
+        document.getElementById('audioWall').pause();
+        
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
         document.getElementById(screenId).classList.add('active');
     }
 
     const contentData = {
-        taj: { title: "Taj Mahal, India", image: "taj_mahal.jpg", audio: "audio1.mp3", text: "The Taj Mahal is in Agra, India. It is one of the top seven tourist travel wonders of the world. The palace is made of white marble and precious stones. Shines with different colours like pink at sunrise, yellow at sunset and blue at night. There is a huge dome and four minarets. Inside, there are 16 rooms. Outside, there is a beautiful garden with four pools." },
-        wall: { title: "The Great Wall of China", image: "great_wall.jpg", audio: "audio2.mp3", text: "The Great Wall of China is in Asia. It is one of the top seven tourist travel wonders of the world. The wall is made of earth, stones, bricks and wood. It is over 5000 kilometres long. The wall has also got watch towers for storing weapons and for sending smoke signals. It is one of the most popular tourist attractions in the world." }
+        taj: { title: "Taj Mahal, India", image: "taj_mahal.jpg", text: "The Taj Mahal is in Agra, India. It is one of the top seven tourist travel wonders of the world. The palace is made of white marble and precious stones. Shines with different colours like pink at sunrise, yellow at sunset and blue at night. There is a huge dome and four minarets. Inside, there are 16 rooms. Outside, there is a beautiful garden with four pools." },
+        wall: { title: "The Great Wall of China", image: "great_wall.jpg", text: "The Great Wall of China is in Asia. It is one of the top seven tourist travel wonders of the world. The wall is made of earth, stones, bricks and wood. It is over 5000 kilometres long. The wall has also got watch towers for storing weapons and for sending smoke signals. It is one of the most popular tourist attractions in the world." }
     };
 
     function openReadingPopup(key) {
         document.getElementById('popupImage').src = contentData[key].image;
         document.getElementById('readTitle').innerText = contentData[key].title;
         document.getElementById('readText').innerText = contentData[key].text;
-        audio.src = contentData[key].audio;
         document.getElementById('readingPanel').style.display = 'flex';
-        audio.play();
     }
 
     function closeReadingPopup() {
         document.getElementById('readingPanel').style.display = 'none';
-        audio.pause();
     }
 
     function saveProgress() {
@@ -278,4 +287,3 @@
 </script>
 </body>
 </html>
- 
