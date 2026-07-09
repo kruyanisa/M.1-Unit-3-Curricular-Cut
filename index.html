@@ -149,6 +149,13 @@
     let currentStep = 1;
 
     window.onload = () => {
+        // ระบบจำ Account
+        if(localStorage.getItem('sv_name')) {
+            document.getElementById('m_name').value = localStorage.getItem('sv_name');
+            document.getElementById('m_room').value = localStorage.getItem('sv_room');
+            document.getElementById('m_id').value = localStorage.getItem('sv_id');
+        }
+
         document.getElementById('m_room').addEventListener('blur', function() { 
             let nums = this.value.trim().match(/\d+/g);
             if (nums && nums.length >= 2) this.value = `ม.${nums[0]}/${nums[1]}`;
@@ -161,6 +168,12 @@
         const r = document.getElementById('m_room').value.trim();
         const i = document.getElementById('m_id').value.trim();
         if(!n || !r || i.length !== 5) { alert('กรุณากรอกข้อมูลให้ครบถ้วนครับ'); return; }
+        
+        // บันทึก Account ลงเครื่อง
+        localStorage.setItem('sv_name', n);
+        localStorage.setItem('sv_room', r);
+        localStorage.setItem('sv_id', i);
+
         student = { name: n, room: r, id: i };
         document.getElementById('userInfo').innerText = `Explorer: ${n} | Room: ${r} | ID: ${i}`;
         document.getElementById('loginModal').classList.remove('active');
@@ -177,7 +190,6 @@
         currentStep += dir;
         document.getElementById('step' + currentStep).classList.add('active');
 
-        // Navigation visibility
         document.getElementById('prevBtn').style.visibility = (currentStep === 1) ? 'hidden' : 'visible';
         document.getElementById('nextBtn').style.display = (currentStep === 2) ? 'none' : 'block';
         document.getElementById('submitBtn').style.display = (currentStep === 2) ? 'block' : 'none';
