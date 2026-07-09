@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ม.1 Unit 3 Curricular Cut</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Sarabun:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * { box-sizing: border-box; }
+        body { 
+            background: linear-gradient(135deg, #fff7ed, #ffedd5); 
+            font-family: 'Sarabun', sans-serif; 
+            display: flex; flex-direction: column; align-items: center; 
+            margin: 0; padding: 10px; height: 100vh; overflow: hidden;
+        }
+
+        /* Login & Score Modals */
+        .modal-overlay { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(15, 23, 42, 0.95); display: flex; 
+            justify-content: center; align-items: center; z-index: 3000; 
+            visibility: hidden; opacity: 0; transition: 0.3s; 
+        }
+        .modal-overlay.active { visibility: visible; opacity: 1; }
+        .modal-box { 
+            background: white; padding: 30px; border-radius: 25px; 
+            text-align: center; width: 90%; max-width: 380px; 
+            border: 5px solid #f97316; box-shadow: 0 0 30px rgba(249,115,22,0.3);
+        }
+        .modal-box h2 { color: #ea580c; margin-top: 0; }
+        .modal-box input { 
+            width: 100%; padding: 12px; margin-bottom: 12px; 
+            border: 2px solid #fed7aa; border-radius: 12px; font-family: 'Sarabun';
+        }
+
+        /* App Layout */
+        .app-container { 
+            width: 100%; max-width: 650px; height: 100%;
+            background: #ffffff; border-radius: 30px; 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1); 
+            display: flex; flex-direction: column;
+            border: 3px solid #fb923c; overflow: hidden; position: relative;
+        }
+
+        .header { 
+            background: linear-gradient(90deg, #f97316, #ea580c); 
+            color: white; padding: 12px; text-align: center; 
+            font-size: 20px; font-weight: bold; border-bottom: 3px solid #fff;
+        }
+
+        .user-banner { background: #fff7ed; padding: 5px; font-size: 13px; font-weight: bold; color: #9a3412; border-bottom: 1px solid #fed7aa; text-align: center; }
+
+        .content-area { flex-grow: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; align-items: center; }
+
+        .step { display: none; width: 100%; animation: slideUp 0.4s ease-out; }
+        .step.active { display: block; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .image-frame { width: 100%; height: 200px; border-radius: 20px; overflow: hidden; border: 4px solid #fff7ed; margin-bottom: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .image-frame img { width: 100%; height: 100%; object-fit: cover; }
+
+        .btn-action { 
+            background: #ea580c; color: white; border: none; padding: 12px 25px; 
+            border-radius: 50px; cursor: pointer; font-weight: bold; 
+            font-family: 'Sarabun'; font-size: 16px; transition: 0.3s;
+            box-shadow: 0 4px 0 #9a3412; margin: 10px 0;
+        }
+        .btn-action:active { transform: translateY(3px); box-shadow: 0 1px 0 #9a3412; }
+
+        /* Floating Modal Dialog (Reading Panel) */
+        .reading-modal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8); z-index: 2500; align-items: center; justify-content: center;
+        }
+        .reading-box {
+            background: #fff; width: 90%; max-width: 500px; padding: 25px; 
+            border-radius: 20px; border: 4px solid #ea580c; position: relative;
+        }
+        .close-btn { position: absolute; top: -15px; right: -15px; background: #ef4444; color: white; width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 3px solid #fff; }
+
+        /* Dropdown Style */
+        .exercise-item { background: #fdf2f8; padding: 12px; border-radius: 15px; margin-bottom: 12px; border-left: 5px solid #f97316; }
+        .exercise-label { font-size: 15px; font-weight: bold; color: #374151; margin-bottom: 5px; display: block; }
+        select { width: 100%; padding: 10px; border-radius: 10px; border: 2px solid #fed7aa; font-family: 'Sarabun'; font-size: 15px; background: white; }
+
+        .footer-nav { padding: 15px; background: #fff; border-top: 1px solid #fed7aa; display: flex; justify-content: space-between; }
+        
+        .score-display { font-size: 40px; font-weight: 800; color: #ea580c; margin: 15px 0; display: block; }
+    </style>
+</head>
+<body>
+
+    <div class="modal-overlay active" id="loginModal">
+        <div class="modal-box">
+            <h2>🌍 Welcome Explorer!</h2>
+            <p>ลงชื่อเข้าสู่บทเรียน 7 Wonders</p>
+            <input type="text" id="m_name" placeholder="ชื่อ-นามสกุล">
+            <input type="text" id="m_room" placeholder="ชั้น/ห้อง (เช่น 1/1)">
+            <input type="text" id="m_id" placeholder="รหัสนักเรียน 5 หลัก" maxlength="5" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+            <button class="btn-action" onclick="startLesson()" style="width:100%;">เริ่มออกเดินทาง 🚀</button>
+        </div>
+    </div>
+
+    <div class="app-container" id="mainApp" style="display:none;">
+        <div class="header">ม.1 Unit 3: Curricular Cut</div>
+        <div class="user-banner" id="userBanner"> Explorer: Loading... </div>
+        
+        <div class="content-area">
+            
+            <div class="step active" id="step1">
+                <div class="image-frame"><img src="taj_mahal.jpg" alt="Taj Mahal"></div>
+                <h3 style="color:#ea580c; margin:0;">🕌 Part 1: Taj Mahal, India</h3>
+                <p style="font-size:15px; color:#4b5563;">กดปุ่มเพื่อฟังเสียงบรรยายและอ่านข้อมูลเพื่อทำแบบฝึกหัด</p>
+                <button class="btn-action" onclick="showReading('taj')">📖 อ่านและฟังเสียงบรรยาย</button>
+                <div style="margin-top:20px;">
+                    <button class="btn-action" style="background:#0ea5e9; box-shadow: 0 4px 0 #0369a1;" onclick="goToStep(2)">ทำแบบฝึกหัด Taj Mahal ➡️</button>
+                </div>
+            </div>
+
+            <div class="step" id="step2">
+                <h3 style="color:#ea580c;">✍️ Complete the sentences</h3>
+                <div id="tajForm">
+                    <div class="exercise-item">
+                        <label class="exercise-label">1. The Taj Mahal is in...</label>
+                        <select id="taj1">
+                            <option value="">-- เลือกคำตอบ --</option>
+                            <option value="Agra, India">Agra, India</option>
+                            <option value="Bangkok, Thailand">Bangkok, Thailand</option>
+                        </select>
+                    </div>
+                    <div class="exercise-item">
+                        <label class="exercise-label">2. It is made of white marble and...</label>
+                        <select id="taj2">
+                            <option value="">-- เลือกคำตอบ --</option>
+                            <option value="precious stones">precious stones</option>
+                            <option value="old bricks">old bricks</option>
+                        </select>
+                    </div>
+                    <div class="exercise-item">
+                        <label class="exercise-label">3. There are __ rooms inside.</label>
+                        <select id="taj3">
+                            <option value="">-- เลือกคำตอบ --</option>
+                            <option value="8">8</option>
+                            <option value="16">16</option>
+                        </select>
+                    </div>
+                    <div class="exercise-item">
+                        <label class="exercise-label">4. There are four...</label>
+                        <select id="taj4">
+                            <option value="">-- เลือกคำตอบ --</option>
+                            <option value="minarets">minarets</option>
+                            <option value="domes">domes</option>
+                        </select>
+                    </div>
+                    <div class="exercise-item">
+                        <label class="exercise-label">5. The garden has got four...</label>
+                        <select id="taj5">
+                            <option value="">-- เลือกคำตอบ --</option>
+                            <option value="pools">pools</option>
+                            <option value="rivers">rivers</option>
+                        </select>
+                    </div>
+                </div>
+                <button class="btn-action" style="background:#0ea5e9; box-shadow: 0 4px 0 #0369a1;" onclick="goToStep(3)">ต่อไป: Great Wall ➡️</button>
+            </div>
+
+            <div class="step" id="step3">
+                <div class="image-frame"><img src="great_wall.jpg" alt="Great Wall"></div>
+                <h3 style="color:#ea580c; margin:0;">🏮 Part 2: Great Wall of China</h3>
+                <p style="font-size:15px; color:#4b5563;">กดปุ่มเพื่อฟังเสียงและอ่านข้อมูลกำแพงเมืองจีน</p>
+                <button class="btn-action" onclick="showReading('wall')">📖 อ่านและฟังเสียงบรรยาย</button>
+                <div style="margin-top:20px;">
+                    <button class="btn-action" style="background:#0ea5e9; box-shadow: 0 4px 0 #0369a1;" onclick="goToStep(4)">ทำแบบฝึกหัด Great Wall ➡️</button>
+                </div>
+            </div>
+
+            <div class="step" id="step4">
+                <h3 style="color:#ea580c;">✍️ Great Wall Quiz</h3>
+                <div class="exercise-item">
+                    <label class="exercise-label">1. Which continent is it in?</label>
+                    <select id="wall1">
+                        <option value="">-- เลือกคำตอบ --</option>
+                        <option value="Asia">Asia</option>
+                        <option value="Europe">Europe</option>
+                    </select>
+                </div>
+                <div class="exercise-item">
+                    <label class="exercise-label">2. What is it made of?</label>
+                    <select id="wall2">
+                        <option value="">-- เลือกคำตอบ --</option>
+                        <option value="Only stones">Only stones</option>
+                        <option value="Earth, stones, bricks and wood">Earth, stones, bricks and wood</option>
+                    </select>
+                </div>
+                <div class="exercise-item">
+                    <label class="exercise-label">3. What does it look like?</label>
+                    <select id="wall3">
+                        <option value="">-- เลือกคำตอบ --</option>
+                        <option value="Short wall">Short wall</option>
+                        <option value="Over 5000 km long with watch towers">Over 5000 km long with watch towers</option>
+                    </select>
+                </div>
+                <button class="btn-action" style="background:#10b981; box-shadow: 0 4px 0 #059669; width:100%;" onclick="submitFinalScore()">✅ ส่งคะแนนเข้าระบบ</button>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="reading-modal" id="readingPanel">
+        <div class="reading-box">
+            <div class="close-btn" onclick="closeReading()"><i class="fa-solid fa-xmark"></i></div>
+            <h3 id="readTitle" style="color:#ea580c; margin-top:0;">Reading</h3>
+            <audio id="audioPlayer" controls style="width:100%; margin-bottom:15px;"></audio>
+            <div id="readText" style="font-size:14px; line-height:1.6; color:#374151; max-height:250px; overflow-y:auto; padding-right:10px;"></div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="scoreModal">
+        <div class="modal-box">
+            <h2>🎉 Excellent!</h2>
+            <p>การสำรวจโลกของคุณสำเร็จแล้ว</p>
+            <span class="score-display" id="finalScoreText">0 / 8</span>
+            <div id="saveStatus" style="font-weight:bold; color:#ea580c;">⏳ กำลังบันทึกคะแนน...</div>
+        </div>
+    </div>
+
+<script>
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxd_UGE1ZY_1dcB3B7l0Vy8azxhuuFoc_kftJ7QZ1Nc4XIaXGKF9RPs8WxhZ0K5VyVN/exec';
+    let student = { name: "", room: "", id: "" };
+    let player = document.getElementById('audioPlayer');
+
+    function startLesson() {
+        const n = document.getElementById('m_name').value.trim();
+        const r = document.getElementById('m_room').value.trim();
+        const i = document.getElementById('m_id').value.trim();
+        if(!n || !r || i.length !== 5) { alert('กรุณากรอกข้อมูลให้ครบถ้วนครับ'); return; }
+        student = { name: n, room: r, id: i };
+        document.getElementById('userBanner').innerText = `🌍 Explorer: ${n} | Room: ${r} | ID: ${i}`;
+        document.getElementById('loginModal').classList.remove('active');
+        document.getElementById('mainApp').style.display = 'flex';
+    }
+
+    function goToStep(s) {
+        document.querySelectorAll('.step').forEach(div => div.classList.remove('active'));
+        document.getElementById('step' + s).classList.add('active');
+        window.scrollTo(0,0);
+    }
+
+    const readings = {
+        taj: {
+            title: "Taj Mahal, India",
+            audio: "audio1.mp3",
+            text: "The Taj Mahal is in Agra, India. It is one of the top seven tourist travel wonders of the world. The palace is made of white marble and precious stones. Shines with different colours like pink at sunrise, yellow at sunset and blue at night. There is a huge dome and four minarets. Inside, there are 16 rooms. Outside, there is a beautiful garden with four pools."
+        },
+        wall: {
+            title: "The Great Wall of China",
+            audio: "audio2.mp3",
+            text: "The Great Wall of China is in Asia. It is one of the top seven tourist travel wonders of the world. The wall is made of earth, stones, bricks and wood. It is over 5000 kilometres long. The wall has also got watch towers for storing weapons and for sending smoke signals. It is one of the most popular tourist attractions in the world."
+        }
+    };
+
+    function showReading(key) {
+        document.getElementById('readTitle').innerText = readings[key].title;
+        document.getElementById('readText').innerText = readings[key].text;
+        player.src = readings[key].audio;
+        document.getElementById('readingPanel').style.display = 'flex';
+        player.play();
+    }
+
+    function closeReading() {
+        document.getElementById('readingPanel').style.display = 'none';
+        player.pause();
+    }
+
+    async function submitFinalScore() {
+        let score = 0;
+        // ตรวจ Taj Mahal (5 ข้อ)
+        if(document.getElementById('taj1').value === "Agra, India") score++;
+        if(document.getElementById('taj2').value === "precious stones") score++;
+        if(document.getElementById('taj3').value === "16") score++;
+        if(document.getElementById('taj4').value === "minarets") score++;
+        if(document.getElementById('taj5').value === "pools") score++;
+        
+        // ตรวจ Great Wall (3 ข้อ)
+        if(document.getElementById('wall1').value === "Asia") score++;
+        if(document.getElementById('wall2').value === "Earth, stones, bricks and wood") score++;
+        if(document.getElementById('wall3').value === "Over 5000 km long with watch towers") score++;
+
+        document.getElementById('finalScoreText').innerText = `${score} / 8`;
+        document.getElementById('scoreModal').classList.add('active');
+
+        const payload = {
+            name: student.name,
+            room: student.room,
+            studentId: "'" + student.id,
+            lesson: "ม.1 Unit 3: Curricular Cut (7 Wonders)",
+            score: score,
+            maxScore: 8,
+            _t: new Date().getTime()
+        };
+
+        try {
+            await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) });
+            document.getElementById('saveStatus').innerText = "✅ บันทึกคะแนนสำเร็จ!";
+        } catch(e) {
+            document.getElementById('saveStatus').innerText = "❌ เกิดข้อผิดพลาดในการส่งข้อมูล";
+        }
+    }
+</script>
+</body>
+</html>
